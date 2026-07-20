@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arthur Brito — Desenvolvedor de Sistemas Jr.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #101720;
+    --bg-panel: #161f2b;
+    --bg-panel-2: #1c2733;
+    --line: #2a3644;
+    --text: #f1eee4;
+    --text-dim: #8b98a4;
+    --amber: #e0973f;
+    --teal: #4aa8a0;
+    --teal-soft: #4aa8a022;
+    --amber-soft: #e0973f22;
+    --danger: #d97757;
+    --radius: 10px;
+    --serif: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.12;
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;position:relative;z-index:1;}
+  ::selection{background:var(--amber); color:#161f2b;}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:3px;
+  }
+
+  /* NAV */
+  header{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(10px);
+    background:rgba(16,23,32,0.82);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .logo{
+    font-family:var(--mono); font-size:15px; color:var(--amber);
+    letter-spacing:0.5px;
+  }
+  .logo span{color:var(--text-dim);}
+  .navlinks{display:flex; gap:28px; font-family:var(--mono); font-size:13px;}
+  .navlinks a{color:var(--text-dim); transition:color .2s;}
+  .navlinks a:hover{color:var(--teal);}
+  .navlinks a::before{content:'./'; color:var(--line);}
+  .navtoggle{display:none;}
+
+  @media (max-width:720px){
+    .navlinks{display:none;}
+  }
+
+  /* HERO */
+  .hero{
+    padding:96px 0 72px;
+    display:grid; grid-template-columns:1.3fr 1fr; gap:48px; align-items:start;
+  }
+  @media (max-width:860px){ .hero{grid-template-columns:1fr;} }
+
+  .terminal{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:0 20px 60px -20px rgba(0,0,0,0.6);
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 14px;
+    background:var(--bg-panel-2);
+    border-bottom:1px solid var(--line);
+  }
+  .dot{width:10px;height:10px;border-radius:50%;}
+  .dot.r{background:#e0625f;} .dot.y{background:#e0b23f;} .dot.g{background:#4aa87a;}
+  .term-title{margin-left:8px; font-family:var(--mono); font-size:12px; color:var(--text-dim);}
+  .term-body{padding:26px 28px 32px; font-family:var(--mono);}
+  .term-line{font-size:13px; color:var(--text-dim); margin-bottom:6px;}
+  .term-line .prompt{color:var(--teal); margin-right:8px;}
+  .term-name{
+    font-family:var(--serif); font-weight:700;
+    font-size:clamp(32px,5vw,46px);
+    margin:14px 0 4px;
+    color:var(--text);
+  }
+  .term-role{
+    font-size:16px; color:var(--amber); font-family:var(--mono); margin-bottom:18px;
+  }
+  .cursor{display:inline-block; width:9px; height:18px; background:var(--amber); vertical-align:middle; animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .badges{display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 26px;}
+  .badge{
+    font-family:var(--mono); font-size:11.5px; letter-spacing:0.3px;
+    padding:5px 11px; border-radius:100px;
+    border:1px solid var(--line); color:var(--text-dim);
+    background:var(--bg-panel-2);
+  }
+  .badge b{color:var(--teal); font-weight:600;}
+
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px;
+    padding:11px 18px; border-radius:6px;
+    border:1px solid var(--line);
+    transition:all .2s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn.primary{background:var(--amber); color:#171018; border-color:var(--amber); font-weight:600;}
+  .btn.primary:hover{background:#f0a755;}
+  .btn.ghost{color:var(--text); background:transparent;}
+  .btn.ghost:hover{border-color:var(--teal); color:var(--teal);}
+
+  /* status side panel */
+  .status-panel{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 22px 24px;
+    font-family:var(--mono);
+    height:fit-content;
+  }
+  .status-title{font-size:11px; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; margin-bottom:16px;}
+  .status-row{display:flex; justify-content:space-between; font-size:13px; padding:9px 0; border-bottom:1px solid var(--line);}
+  .status-row:last-child{border-bottom:none;}
+  .status-row span:first-child{color:var(--text-dim);}
+  .status-row span:last-child{color:var(--teal); font-weight:500;}
+  .pulse{width:7px;height:7px;border-radius:50%;background:var(--teal); display:inline-block; margin-right:6px; box-shadow:0 0 0 rgba(74,168,160,0.6); animation:pulse 2s infinite;}
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(74,168,160,0.5);}
+    70%{box-shadow:0 0 0 8px rgba(74,168,160,0);}
+    100%{box-shadow:0 0 0 0 rgba(74,168,160,0);}
+  }
+
+  /* SECTION HEADERS */
+  section{padding:64px 0; position:relative; z-index:1;}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:40px;}
+  .sec-tag{font-family:var(--mono); font-size:12px; color:var(--amber); white-space:nowrap;}
+  .sec-title{font-family:var(--serif); font-size:clamp(24px,3vw,32px); font-weight:600;}
+  .sec-rule{flex:1; height:1px; background:var(--line);}
+
+  /* ABOUT - log style */
+  .log{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:8px 0; font-family:var(--mono); font-size:14px; overflow:hidden;
+  }
+  .log-line{display:flex; gap:18px; padding:11px 24px; border-bottom:1px solid var(--line); color:var(--text-dim);}
+  .log-line:last-child{border-bottom:none;}
+  .log-line .ln{color:#4a5764; user-select:none; min-width:20px;}
+  .log-line .tag{color:var(--teal); min-width:78px;}
+  .log-line .msg{color:var(--text); font-family:var(--body); font-size:15px; line-height:1.5;}
+
+  /* SKILLS - network topology */
+  .topology{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:40px 20px;
+  }
+  .topo-svg{width:100%; height:auto; display:block;}
+  .node-label{font-family:var(--mono); font-size:12px; fill:var(--text); font-weight:500;}
+  .node-sub{font-family:var(--body); font-size:10.5px; fill:var(--text-dim);}
+  .edge{stroke:var(--line); stroke-width:1.5;}
+  .packet{fill:var(--amber);}
+  .node-circle{fill:var(--bg-panel-2); stroke:var(--teal); stroke-width:1.5;}
+  .node-circle.core{stroke:var(--amber);}
+
+  /* CERTS */
+  .cert-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:780px){.cert-grid{grid-template-columns:1fr 1fr;}}
+  @media (max-width:520px){.cert-grid{grid-template-columns:1fr;}}
+  .cert-card{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px; transition:transform .2s, border-color .2s;
+  }
+  .cert-card:hover{transform:translateY(-3px); border-color:var(--teal);}
+  .cert-src{font-family:var(--mono); font-size:11px; color:var(--amber); letter-spacing:0.5px; margin-bottom:10px;}
+  .cert-name{font-weight:600; font-size:15px; margin-bottom:6px;}
+  .cert-meta{font-family:var(--mono); font-size:11.5px; color:var(--text-dim);}
+
+  /* PROJECTS */
+  .proj-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media (max-width:860px){.proj-grid{grid-template-columns:1fr;}}
+  .proj-card{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px; display:flex; flex-direction:column; gap:12px;
+    transition:border-color .2s, transform .2s;
+  }
+  .proj-card:hover{border-color:var(--amber); transform:translateY(-3px);}
+  .proj-top{display:flex; justify-content:space-between; align-items:flex-start;}
+  .proj-name{font-family:var(--mono); font-weight:600; font-size:14.5px; color:var(--text);}
+  .proj-branch{font-family:var(--mono); font-size:11px; color:var(--teal); background:var(--teal-soft); padding:3px 8px; border-radius:100px;}
+  .proj-desc{font-size:13.5px; color:var(--text-dim); flex:1;}
+  .proj-stack{display:flex; flex-wrap:wrap; gap:6px;}
+  .stack-tag{font-family:var(--mono); font-size:10.5px; color:var(--text-dim); border:1px solid var(--line); padding:3px 8px; border-radius:5px;}
+  .proj-note{font-family:var(--mono); font-size:11px; color:#5a6875; border-top:1px dashed var(--line); padding-top:10px; margin-top:2px;}
+
+  /* CONTACT */
+  .contact-box{
+    background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:36px; font-family:var(--mono);
+  }
+  .contact-cmd{color:var(--text-dim); font-size:14px; margin-bottom:22px;}
+  .contact-cmd .prompt{color:var(--teal); margin-right:8px;}
+  .contact-cmd .flag{color:var(--amber);}
+  .contact-links{display:flex; flex-wrap:wrap; gap:14px;}
+  .contact-link{
+    display:flex; align-items:center; gap:10px;
+    padding:13px 18px; border:1px solid var(--line); border-radius:8px;
+    font-size:13.5px; color:var(--text); transition:all .2s; flex:1; min-width:200px;
+  }
+  .contact-link:hover{border-color:var(--teal); background:var(--teal-soft);}
+  .contact-link .ico{color:var(--amber); font-family:var(--serif); font-weight:700;}
+
+  footer{
+    padding:32px 0 48px; text-align:center; font-family:var(--mono); font-size:12px; color:var(--text-dim);
+  }
+
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.show{opacity:1; transform:none;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+    .reveal{opacity:1; transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo">AB<span>_</span></div>
+    <div class="navlinks">
+      <a href="#sobre">sobre</a>
+      <a href="#skills">skills</a>
+      <a href="#formacao">formacao</a>
+      <a href="#projetos">projetos</a>
+      <a href="#contato">contato</a>
+    </div>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" id="topo">
+    <div class="terminal">
+      <div class="term-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="term-title">arthur@sistemas — bash — 80x24</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="prompt">$</span>whoami</div>
+        <div class="term-name">Arthur Brito</div>
+        <div class="term-role">Desenvolvedor de Sistemas Jr.<span class="cursor"></span></div>
+        <div class="term-line"><span class="prompt">$</span>cat sobre.txt</div>
+        <p style="font-family:var(--body); font-size:15px; color:var(--text-dim); max-width:46ch; margin:6px 0 4px;">
+          Construindo bases sólidas em desenvolvimento e redes — do código à infraestrutura que o sustenta.
+        </p>
+        <div class="badges">
+          <span class="badge"><b>SENAC</b> · Des. de Sistemas</span>
+          <span class="badge"><b>CISCO</b> · Redes</span>
+          <span class="badge"><b>DIO</b> · Formação Tech</span>
+          <span class="badge"><b>EN</b> · Fluente</span>
+        </div>
+        <div class="cta-row">
+          <a href="#projetos" class="btn primary">ver projetos →</a>
+          <a href="#contato" class="btn ghost">entrar em contato</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-panel reveal">
+      <div class="status-title">status do sistema</div>
+      <div class="status-row"><span><span class="pulse"></span>disponibilidade</span><span>aberto p/ estágio</span></div>
+      <div class="status-row"><span>instituição</span><span>SENAC</span></div>
+      <div class="status-row"><span>certificações</span><span>Cisco · DIO</span></div>
+      <div class="status-row"><span>idioma</span><span>PT-BR / EN</span></div>
+      <div class="status-row"><span>foco atual</span><span>dev + redes</span></div>
+      <div class="status-row"><span>uptime</span><span id="uptime">carregando…</span></div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre">
+    <div class="sec-head"><span class="sec-tag">01</span><h2 class="sec-title">Sobre</h2><div class="sec-rule"></div></div>
+    <div class="log reveal">
+      <div class="log-line"><span class="ln">01</span><span class="tag"></span><span class="msg">Estudante de Desenvolvimento de Sistemas no SENAC, aplicando na prática lógica de programação, banco de dados e arquitetura de software.</span></div>
+      <div class="log-line"><span class="ln">02</span><span class="tag"></span><span class="msg">Certificações Cisco somam a visão de redes ao repertório de desenvolvimento — do front ao roteamento.</span></div>
+      <div class="log-line"><span class="ln">03</span><span class="tag"></span><span class="msg">Trilhas complementares na DIO mantêm o aprendizado constante em novas linguagens, ferramentas e boas práticas.</span></div>
+      <div class="log-line"><span class="ln">04</span><span class="tag"></span><span class="msg">Inglês fluente, pronto para times, documentações e squads internacionais.</span></div>
+      <div class="log-line"><span class="ln">05</span><span class="tag"></span><span class="msg">Buscando a primeira oportunidade como desenvolvedor júnior para crescer junto de um time.</span></div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="sec-head"><span class="sec-tag">02</span><h2 class="sec-title">Skills</h2><div class="sec-rule"></div></div>
+    <div class="topology reveal">
+      <svg viewBox="0 0 900 420" class="topo-svg" role="img" aria-label="Mapa de habilidades técnicas conectadas por área">
+        <!-- edges -->
+        <line class="edge" x1="450" y1="210" x2="180" y2="90"/>
+        <line class="edge" x1="450" y1="210" x2="720" y2="90"/>
+        <line class="edge" x1="450" y1="210" x2="180" y2="330"/>
+        <line class="edge" x1="450" y1="210" x2="720" y2="330"/>
+        <line class="edge" x1="450" y1="210" x2="450" y2="40"/>
+
+        <!-- animated packets -->
+        <circle class="packet" r="3.5"><animateMotion dur="3s" repeatCount="indefinite" path="M450,210 L180,90"/></circle>
+        <circle class="packet" r="3.5"><animateMotion dur="3.6s" repeatCount="indefinite" path="M450,210 L720,90"/></circle>
+        <circle class="packet" r="3.5"><animateMotion dur="4s" repeatCount="indefinite" path="M450,210 L180,330"/></circle>
+        <circle class="packet" r="3.5"><animateMotion dur="3.3s" repeatCount="indefinite" path="M450,210 L720,330"/></circle>
+
+        <!-- core node -->
+        <circle class="node-circle core" cx="450" cy="210" r="46"/>
+        <text x="450" y="206" text-anchor="middle" class="node-label">Arthur</text>
+        <text x="450" y="222" text-anchor="middle" class="node-sub">dev de sistemas</text>
+
+        <!-- top node -->
+        <circle class="node-circle" cx="450" cy="40" r="34"/>
+        <text x="450" y="36" text-anchor="middle" class="node-label">Inglês</text>
+        <text x="450" y="52" text-anchor="middle" class="node-sub">fluente</text>
+
+        <!-- linguagens -->
+        <circle class="node-circle" cx="180" cy="90" r="40"/>
+        <text x="180" y="82" text-anchor="middle" class="node-label">Linguagens</text>
+        <text x="180" y="98" text-anchor="middle" class="node-sub">Java · Python · C#</text>
+
+        <!-- web -->
+        <circle class="node-circle" cx="720" cy="90" r="40"/>
+        <text x="720" y="82" text-anchor="middle" class="node-label">Web</text>
+        <text x="720" y="98" text-anchor="middle" class="node-sub">HTML · CSS · JS</text>
+
+        <!-- redes -->
+        <circle class="node-circle" cx="180" cy="330" r="40"/>
+        <text x="180" y="322" text-anchor="middle" class="node-label">Redes</text>
+        <text x="180" y="338" text-anchor="middle" class="node-sub">Cisco · TCP/IP</text>
+
+        <!-- dados -->
+        <circle class="node-circle" cx="720" cy="330" r="40"/>
+        <text x="720" y="322" text-anchor="middle" class="node-label">Dados</text>
+        <text x="720" y="338" text-anchor="middle" class="node-sub">SQL · Git</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- FORMAÇÃO / CERTS -->
+  <section id="formacao">
+    <div class="sec-head"><span class="sec-tag">03</span><h2 class="sec-title">Formação &amp; Certificações</h2><div class="sec-rule"></div></div>
+    <div class="cert-grid reveal">
+      <div class="cert-card">
+        <div class="cert-src">SENAC</div>
+        <div class="cert-name">Desenvolvimento de Sistemas</div>
+        <div class="cert-meta">em andamento</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-src">CISCO NETWORKING ACADEMY</div>
+        <div class="cert-name">Introduction to Networks</div>
+        <div class="cert-meta">certificado</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-src">CISCO NETWORKING ACADEMY</div>
+        <div class="cert-name">Fundamentos de Cibersegurança</div>
+        <div class="cert-meta">certificado</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-src">DIO</div>
+        <div class="cert-name">Formação Fundamentos de Programação</div>
+        <div class="cert-meta">certificado</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-src">DIO</div>
+        <div class="cert-name">Git e GitHub na Prática</div>
+        <div class="cert-meta">certificado</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-src">EXTRA</div>
+        <div class="cert-name">Inglês — Nível Fluente-B2</div>
+        <div class="cert-meta">certificado</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJETOS -->
+  <section id="projetos">
+    <div class="sec-head"><span class="sec-tag">04</span><h2 class="sec-title">Projetos</h2><div class="sec-rule"></div></div>
+    <div class="proj-grid reveal">
+      <div class="proj-card">
+        <div class="proj-top"><span class="proj-name">Verificador de senhas</span><span class="proj-branch">main</span></div>
+        <p class="proj-desc">um sistema que verifica senhas em numeros inteiros</p>
+        <div class="proj-stack"><span class="stack-tag">HTML</span><span class="stack-tag">css</span></div>
+        <div class="proj-note">//https://github.com/Britoxz/Verificador-de-senhas</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-top"><span class="proj-name">interface-escolar</span><span class="proj-branch">main</span></div>
+        <p class="proj-desc">interface escolar feita para testar conceitos de HTML,CSS e JS</p>
+        <div class="proj-stack"><span class="stack-tag">HTML</span><span class="stack-tag">CSS</span><span class="stack-tag">JS</span></div>
+        <div class="proj-note">// https://github.com/Britoxz/interface-escolar</div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-top"><span class="proj-name">Sistema de login</span><span class="proj-branch">main</span></div>
+        <p class="proj-desc">Sistema de login feito como atividade proposta no curso de python da DIO</p>
+        <div class="proj-stack"><span class="stack-tag">Python</span><span class="stack-tag">Redes</span></div>
+        <div class="proj-note">//https://github.com/Britoxz/Sistema-de-login</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato">
+    <div class="sec-head"><span class="sec-tag">05</span><h2 class="sec-title">Contato</h2><div class="sec-rule"></div></div>
+    <div class="contact-box reveal">
+      <div class="contact-cmd"><span class="prompt">$</span>connect <span class="flag">--email</span> <span class="flag">--linkedin</span> <span class="flag">--github</span></div>
+      <div class="contact-links">
+        <a class="contact-link" href="arthurboliveira1303@gmail.com"><span class="ico">@</span> arthurboliveira1303@gmail.com</a>
+        <a class="contact-link" href="https://www.linkedin.com/in/arthur-brito-683247396/" target="_blank" rel="noopener"><span class="ico">in</span> linkedin.com/in/arthur-brito</a>
+        <a class="contact-link" href="https://github.com/Britoxz" target="_blank" rel="noopener"><span class="ico">&lt;/&gt;</span> github.com/Britoxz</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 Arthur Brito — construído com HTML, CSS e café.
+</footer>
+
+<script>
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // fake uptime counter since a fixed "start date" of studies
+  const start = new Date('2024-02-01T00:00:00');
+  const uptimeEl = document.getElementById('uptime');
+  function updateUptime(){
+    const diff = Date.now() - start.getTime();
+    const days = Math.floor(diff/86400000);
+    uptimeEl.textContent = days + ' dias';
+  }
+  updateUptime();
+  setInterval(updateUptime, 60000);
+</script>
+
+</body>
+</html>
